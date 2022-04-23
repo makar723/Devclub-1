@@ -1,0 +1,4 @@
+[webserver]
+node1.example.com
+[appserver]
+node2.example.com

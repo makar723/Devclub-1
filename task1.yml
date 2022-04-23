@@ -1,0 +1,82 @@
+---
+- hosts: webserver
+
+  vars_files:
+    - vars/default.yml
+
+  tasks:
+  - name: "apt-get update"
+    become: yes
+    apt:
+      update_cache: yes
+      cache_valid_time: 3600
+
+  - name: "install nginx"
+    become: yes
+    apt:
+      name: ['nginx']
+      state: latest
+
+  - name: Generate private key
+    become: yes
+    openssl_privatekey:
+      path: /etc/nginx/cert.key
+      size: 2048
+
+  - name: Generate an OpenSSL Certificate Signing Request with Subject information
+    become: yes
+    openssl_csr:
+        path: "/etc/nginx/cert.csr"
+        privatekey_path: /etc/nginx/cert.key
+        country_name: "RU"
+        organization_name: "CICD"
+        email_address: "andrei@makarenkov.ru"
+        common_name: "node1.example.com"
+
+
+  - name: Create self-signed certificate
+    become: yes
+    openssl_certificate:
+      path: /etc/nginx/cert.crt
+      privatekey_path: /etc/nginx/cert.key
+      csr_path: "/etc/nginx/cert.csr"
+      provider: selfsigned
+
+#  - name: "create www directory"
+#    become: yes
+#    file:
+#      path: /var/www/{{ domain }}
+#      state: directory
+#      mode: '0775'
+#      owner: "{{ app_user }}"
+#      group: "{{ app_user }}"
+
+  - name: delete default nginx site
+    become: yes
+    file:
+      path: /etc/nginx/sites-enabled/default
+      state: absent
+    notify: restart nginx
+
+  - name: copy nginx site.conf
+    become: yes
+    template:
+      src: files/site.conf.j2
+      dest: /etc/nginx/sites-enabled/default
+      owner: root
+      group: root
+      mode: '0644'
+    notify: restart nginx
+
+  #- name: "sync website"
+  #  copy:
+  #    src: files/index.html
+  #    dest: /var/www/{{ domain }}
+  #  notify: restart nginx
+
+  handlers:
+    - name: restart nginx
+      become: yes
+      service:
+        name: nginx
+        state: restarted

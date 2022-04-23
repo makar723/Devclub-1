@@ -1,0 +1,6 @@
+---
+domain: cicd.example.com
+app_user: "ansible"
+http_host: "node1"
+http_port: "80"
+disable_default: true
