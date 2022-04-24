@@ -6,11 +6,7 @@
     become: yes
     apt:
       update_cache: yes
-  #- name: "apt-get update"
-  #  become: yes
-  #  apt:
-  #    update_cache: yes
-  #    cache_valid_time: 3600
+  
 
   - name: Install OpenJDK Java
     become: yes
@@ -47,17 +43,6 @@
         name=jenkins
         state=started
 
-  #- name: Create nginx_backup.sh
-  #  become: yes
-  #  copy:
-  #    dest: "/etc/cron.hourly/nginx_backup.sh"
-  #    content: |
-  #            #!/bin/bash
-  #            scp -r ansible@node1:/etc/nginx/sites-enabled/default ~/default_$(date +%d-%m-%Y)
-  #    mode: 0755
-  #    owner: ansible
-  #    group: ansible
-
 
   - name: Create daily backup job
     cron:
@@ -68,8 +53,3 @@
       day: '*'
       job: 'scp -r ansible@node1:/etc/nginx/sites-enabled/default ~/default'
       state: present
-
-    #name: "daily nginx config backup"
-    #  minute: "21"
-    #  hour: "13"
-    #  job: "scp -r ansible@node1:/etc/nginx/sites-enabled/default ~/default_$(date +%d-%m-%Y)"
