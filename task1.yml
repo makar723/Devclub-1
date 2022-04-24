@@ -42,14 +42,6 @@
       csr_path: "/etc/nginx/cert.csr"
       provider: selfsigned
 
-#  - name: "create www directory"
-#    become: yes
-#    file:
-#      path: /var/www/{{ domain }}
-#      state: directory
-#      mode: '0775'
-#      owner: "{{ app_user }}"
-#      group: "{{ app_user }}"
 
   - name: delete default nginx site
     become: yes
@@ -67,12 +59,6 @@
       group: root
       mode: '0644'
     notify: restart nginx
-
-  #- name: "sync website"
-  #  copy:
-  #    src: files/index.html
-  #    dest: /var/www/{{ domain }}
-  #  notify: restart nginx
 
   handlers:
     - name: restart nginx
