@@ -24,7 +24,7 @@ Vagrant.configure("2") do |config|
       vb.gui = false
 	  vb.customize ["modifyvm", :id, "--audio", "none"]
 	  vb.customize ["modifyvm", :id, "--accelerate3d", "off"]
-	  vb.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga"]
+	  vb.customize ["modifyvm", :id, "--graphicscontroller", "vboxsvga"]
 	  
     end
  	v.memory = 4096
@@ -56,7 +56,7 @@ Vagrant.configure("2") do |config|
     config.vm.provider "virtualbox" do |vb|
       vb.customize ["modifyvm", :id, "--audio", "none"]
 	  vb.customize ["modifyvm", :id, "--accelerate3d", "off"]
-	  vb.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga"]
+	  vb.customize ["modifyvm", :id, "--graphicscontroller", "vboxsvga"]
     end
 	
   end
@@ -72,7 +72,7 @@ Vagrant.configure("2") do |config|
     config.vm.provider "virtualbox" do |vb|
       vb.customize ["modifyvm", :id, "--audio", "none"]
 	  vb.customize ["modifyvm", :id, "--accelerate3d", "off"]
-	  vb.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga"]
+	  vb.customize ["modifyvm", :id, "--graphicscontroller", "vboxsvga"]
     end
 	
   end
